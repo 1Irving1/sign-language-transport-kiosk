@@ -27,3 +27,4 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query("SELECT COUNT(b) FROM Booking b WHERE b.trainNumber = :trainNumber AND b.departureTime = :departureTime")
     Long countBookingsByTrainAndTime(@Param("trainNumber") String trainNumber, @Param("departureTime") LocalDateTime departureTime);
 }
+

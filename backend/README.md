@@ -120,3 +120,4 @@ src/main/java/com/capstone/
 4. **실제 결제 시스템 연동**
 5. **보안 강화** (JWT 토큰, 암호화)
 6. **모니터링 및 로깅** (Actuator, Logback)
+

@@ -8,3 +8,4 @@ import org.springframework.web.bind.annotation.RestController;
 public class PaymentController {
     // TODO: 결제 관련 API 구현
 }
+

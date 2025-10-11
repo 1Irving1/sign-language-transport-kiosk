@@ -8,3 +8,4 @@ import org.springframework.web.bind.annotation.RestController;
 public class TrainController {
     // TODO: 기차 조회 관련 API 구현
 }
+

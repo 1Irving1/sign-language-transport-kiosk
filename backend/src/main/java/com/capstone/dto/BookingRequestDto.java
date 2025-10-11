@@ -36,3 +36,4 @@ public class BookingRequestDto {
     
     private String tripType; // "one_way" or "round_trip"
 }
+

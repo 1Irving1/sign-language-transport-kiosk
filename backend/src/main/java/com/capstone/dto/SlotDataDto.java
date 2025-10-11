@@ -37,3 +37,4 @@ public class SlotDataDto {
     @JsonProperty("confidence")
     private Double confidence;
 }
+

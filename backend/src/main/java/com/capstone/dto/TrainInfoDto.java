@@ -27,3 +27,4 @@ public class TrainInfoDto {
     private String status; // "available", "sold_out", "delayed"
     private List<String> stops;
 }
+

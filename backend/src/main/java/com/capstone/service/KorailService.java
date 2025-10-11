@@ -6,3 +6,4 @@ import org.springframework.stereotype.Service;
 public class KorailService {
     // TODO: 코레일 API 연동 서비스 구현
 }
+

@@ -6,3 +6,4 @@ import org.springframework.stereotype.Component;
 public class QrGenerator {
     // TODO: QR코드 생성 유틸리티 구현
 }
+

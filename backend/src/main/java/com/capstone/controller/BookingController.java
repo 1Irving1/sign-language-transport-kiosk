@@ -8,3 +8,4 @@ import org.springframework.web.bind.annotation.RestController;
 public class BookingController {
     // TODO: 예매 관련 API 구현
 }
+
