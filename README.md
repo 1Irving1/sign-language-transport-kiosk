@@ -4,16 +4,22 @@
 
 ## 기술 스택
 
-- **Java 17**
-- **Spring Boot 3.2.5**
-- **Spring Data JPA**
-- **Spring WebFlux** (비동기 HTTP 클라이언트)
-- **Spring Security**
-- **H2 Database** (개발용) / **MySQL** (운영용)
-- **ZXing** (QR코드 생성)
-- **Jackson** (JSON 처리)
-- **OpenCSV** (CSV 파일 파싱)
-- **SpringDoc OpenAPI** (Swagger UI)
+### 백엔드
+- Java 17
+- Spring Boot 3.2.5
+- Spring Data JPA
+- Spring WebFlux (비동기 HTTP 클라이언트)
+- Spring Security
+- H2 Database (개발용) / MySQL (운영용)
+- ZXing (QR코드 생성)
+- Jackson (JSON 처리)
+- OpenCSV (CSV 파일 파싱)
+- SpringDoc OpenAPI (Swagger UI)
+
+### AI 모델
+- MediaPipe (키포인트 추출)
+- GRU 기반 수어 인식 모델
+- 실시간 추론 시스템
 
 ## 프로젝트 구조
 
@@ -27,12 +33,14 @@ src/main/java/com/capstone/
 │   ├── HealthController.java               # 헬스 체크 엔드포인트
 │   ├── TrainController.java
 │   ├── BookingController.java
-│   └── PaymentController.java
+│   ├── PaymentController.java
+│   └── SignLanguageController.java         # 수어 인식 컨트롤러
 ├── service/                                # 비즈니스 로직
 │   ├── KorailService.java
 │   ├── TrainDataLoader.java                # CSV 데이터 로딩
 │   ├── BookingService.java
-│   └── PaymentService.java
+│   ├── PaymentService.java
+│   └── SignLanguageService.java            # 수어 인식 서비스
 ├── entity/                                 # JPA 엔티티
 │   ├── TrainSchedule.java                  # 열차 시간표 엔티티
 │   ├── Booking.java
@@ -40,7 +48,13 @@ src/main/java/com/capstone/
 ├── dto/                                     # 데이터 전송 객체
 │   ├── SlotDataDto.java
 │   ├── TrainInfoDto.java
-│   └── BookingRequestDto.java
+│   ├── BookingRequestDto.java
+│   ├── SignLanguageInputDto.java
+│   ├── CityRecognitionResponseDto.java
+│   ├── DateTimeRecognitionResponseDto.java
+│   ├── PassengerRecognitionResponseDto.java
+│   ├── TripTypeRecognitionResponseDto.java
+│   └── SeatClassRecognitionResponseDto.java
 ├── repository/                              # 데이터 접근 계층
 │   ├── TrainScheduleRepository.java        # 열차 시간표 리포지토리
 │   ├── BookingRepository.java
@@ -48,9 +62,17 @@ src/main/java/com/capstone/
 └── util/                                    # 유틸리티
     ├── JsonParser.java
     └── QrGenerator.java
+
 ```
 
 ## 주요 기능
+
+### 백엔드 실행
+```bash
+cd backend
+./gradlew clean build --refresh-dependencies
+./gradlew bootRun
+```
 
 ### 1. 기차 조회 (Train)
 - 출발지, 목적지, 출발 시간 등 조건에 따른 열차 시간표 검색
