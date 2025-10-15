@@ -15,10 +15,13 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/api/train/**").permitAll()
-                .requestMatchers("/api/booking/**").permitAll()
-                .requestMatchers("/api/payment/**").permitAll()
+                // Note: server.servlet.context-path=/api 이므로 보안 매칭에서는 "/api"를 포함하지 않습니다.
+                .requestMatchers("/health/**").permitAll()
+                .requestMatchers("/train/**").permitAll()
+                .requestMatchers("/booking/**").permitAll()
+                .requestMatchers("/payment/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
             )
             .headers(headers -> headers.frameOptions().disable());
