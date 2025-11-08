@@ -9,6 +9,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Max;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,7 +24,13 @@ public class BookingRequestDto {
     
     @NotBlank(message = "Arrival station is required")
     private String arrivalStation;
-    
+
+    @NotNull(message = "Departure time is required")
+    private LocalDateTime departureTime;
+
+    @NotNull(message = "Arrival time is required")
+    private LocalDateTime arrivalTime;
+
     @NotNull(message = "Passengers count is required")
     @Min(value = 1, message = "At least 1 passenger required")
     @Max(value = 9, message = "Maximum 9 passengers allowed")

@@ -41,8 +41,8 @@ public class TrainSchedule {
     @Column(nullable = false)
     private String operatingDays; // 운행 요일 (매일, 월, 금토일 등)
 
-    // 가격, 좌석 타입, 좌석 수 등은 나중에 추가 가능
-    // private Integer price;
+    @Column(nullable = false)
+    private Integer price; // 가격
     // private String seatType;
     // private Integer availableSeats;
 }

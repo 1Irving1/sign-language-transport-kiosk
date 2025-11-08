@@ -11,9 +11,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.capstone.entity.TrainSchedule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class KorailService {
+
+    private static final Logger logger = LoggerFactory.getLogger(KorailService.class);
 
     private final TrainScheduleRepository trainScheduleRepository;
 
@@ -29,6 +33,7 @@ public class KorailService {
     ) {
         // departureFrom이 null일 경우 현재 시간으로 기본 설정
         final LocalDateTime effectiveDepartureFrom = (departureFrom == null) ? LocalDateTime.now() : departureFrom;
+        logger.debug("Effective Departure From: {}", effectiveDepartureFrom);
 
         List<TrainSchedule> filteredSchedules = new ArrayList<>();
 

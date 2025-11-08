@@ -106,7 +106,7 @@ public class TrainDataLoader {
                             if (arrTime == null) continue; // 도착 시간이 없는 역은 건너뜀
 
                             // 임시 날짜 설정 (예: 2025년 10월 15일)
-                            LocalDate baseDate = LocalDate.of(2025, 10, 15);
+                            LocalDate baseDate = LocalDate.now();
 
                             LocalDateTime departureDateTime = LocalDateTime.of(baseDate, depTime);
                             LocalDateTime arrivalDateTime = LocalDateTime.of(baseDate, arrTime);
@@ -124,6 +124,7 @@ public class TrainDataLoader {
                                     .departureTime(departureDateTime)
                                     .arrivalTime(arrivalDateTime)
                                     .operatingDays(operatingDays)
+                                    .price(30000) // 임시 가격 설정 (실제 로직 필요)
                                     .build());
                         }
                     }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TrainScheduleRepository extends JpaRepository<TrainSchedule, Long> {
@@ -38,5 +39,12 @@ public interface TrainScheduleRepository extends JpaRepository<TrainSchedule, Lo
     List<TrainSchedule> findByArrivalStationAndDepartureTimeAfterOrderByDepartureTimeAsc(
             String arrivalStation,
             LocalDateTime departureTime
+    );
+
+    // 열차 번호, 출발 시간, 도착 시간을 기준으로 열차 시간표 조회
+    Optional<TrainSchedule> findByTrainNumberAndDepartureTimeAndArrivalTime(
+            String trainNumber,
+            LocalDateTime departureTime,
+            LocalDateTime arrivalTime
     );
 }

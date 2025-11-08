@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
     
-    Optional<Booking> findByBookingNumber(String bookingNumber);
+    Optional<Booking> findByBookingId(String bookingId);
     
     List<Booking> findByStatus(String status);
     
