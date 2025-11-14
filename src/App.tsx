@@ -1,6 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import StationPage from "./pages/ArrivalPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import TripTypePage from "./pages/TripTypePage";
 import DateTimePage from "./pages/DateTimePage";
