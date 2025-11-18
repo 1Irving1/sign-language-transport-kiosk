@@ -1,33 +1,40 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import CameraFeed from "../components/CameraFeed";
 import RecognitionResult from "../components/RecognitionResult";
 import RecognitionButtons from "../components/RecognitionButton";
+import { useRecognitionFlow } from "../hooks/useRecognitionFlow";
 
 export default function ArrivalPage() {
-  const [isRecognizing, setIsRecognizing] = useState(true);
-  const [recognized, setRecognized] = useState(false);
-  const [station, setStation] = useState<string | null>(null);
   const navigate = useNavigate();
+  
+  const { videoRef, state, startRecognition, stopRecognition, resetResult } = useRecognitionFlow({
+    serverUrl: import.meta.env.VITE_RECOGNITION_SERVER_URL || 'ws://localhost:8080/api/sign/stream',
+    targetFps: 10,
+    enableHandFilter: true,
+    onRecognized: (label, prob) => {
+      console.log(`도착역 인식 완료: ${label} (확률: ${prob})`);
+    },
+  });
 
-  const handleStart = () => {
-    navigate("/triptype"); // 도착역 화면으로 이동
+  useEffect(() => {
+    startRecognition();
+    return () => {
+      stopRecognition();
+    };
+  }, []);
+
+  const handleRetry = () => {
+    resetResult();
+    startRecognition();
   };
 
-
-// 테스트 
-  useEffect(() => {
-    if (isRecognizing) {
-      const timer = setTimeout(() => {
-        setRecognized(true);
-        setStation("서울역");
-        setIsRecognizing(false);
-      }, 4000);
-
-      return () => clearTimeout(timer);
+  const handleConfirm = () => {
+    if (state.recognizedLabel) {
+      navigate("/triptype");
     }
-  }, [isRecognizing]);
+  };
 
   return (
     <div className="flex items-center justify-center bg-gray-100">
@@ -43,32 +50,48 @@ export default function ArrivalPage() {
               도착역 이름을 수어로 표현해주세요.
             </p>
 
+            {/* 에러 표시 */}
+            {state.error && (
+              <div className="bg-red-100 text-red-700 px-4 py-2 rounded-lg mb-4 text-sm">
+                ⚠️ {state.error}
+              </div>
+            )}
+
+            {/* 연결 상태 */}
+            {!state.isReady && state.isRecognizing && (
+              <div className="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-lg mb-4 text-sm">
+                인식 서버 연결 중...
+              </div>
+            )}
          
             <div className="relative flex items-center justify-center w-full">
               <CameraFeed  
-                isRecognizing={isRecognizing}
-                recognized={recognized}
-                station={station}
+                videoRef={videoRef}
+                isRecognizing={state.isRecognizing}
+                recognized={state.recognizedLabel !== null}
+                station={state.recognizedLabel}
               />
 
           
-              {recognized && (
+              {state.recognizedLabel && (
                 <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-[85%]">
-                  <RecognitionResult stationName={station!} />
+                  <RecognitionResult stationName={state.recognizedLabel} />
                 </div>
               )}
             </div>
 
+            {/* 디버그 정보 */}
+            {import.meta.env.DEV && (
+              <div className="text-xs text-gray-500 mt-2 text-center">
+                전송: {state.framesSent} | 확률: {state.recognizedProb?.toFixed(2) || 'N/A'}
+              </div>
+            )}
           
-            {recognized && (
+            {state.recognizedLabel && (
               <div className="flex gap-4 mt-3 justify-center">
                 <RecognitionButtons
-                  onRetry={() => {
-                    setRecognized(false);
-                    setIsRecognizing(true);
-                    setStation(null);
-                  }}
-                  onConfirm={handleStart}
+                  onRetry={handleRetry}
+                  onConfirm={handleConfirm}
                 />
               </div>
             )}
