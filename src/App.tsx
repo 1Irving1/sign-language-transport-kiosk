@@ -4,6 +4,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import TripTypePage from "./pages/TripTypePage";
 import DateTimePage from "./pages/DateTimePage";
 import PassengerPage from "./pages/PassengerPage";
+import TrainTimeTablePage from "./pages/TrainTimeTablePage";
 import SeatPage from "./pages/SeatPage";
 import SeatListPage from "./pages/SeatListPage";
 import DeparturePage from "./pages/DeparturePage";
@@ -17,7 +18,7 @@ const router = createBrowserRouter([
   { path: "/passenger", element: <PassengerPage /> },
   { path: "/triptype", element: <TripTypePage/>},
   { path: "/datetime", element: <DateTimePage/>},
-  { path: "/trainlist", element: <PassengerPage /> },
+  { path: "/timetable", element: <TrainTimeTablePage /> },
   { path: "/seat", element: <SeatPage/>},
   { path: "/seatlist", element: <SeatListPage/>},
   { path: "/"}
