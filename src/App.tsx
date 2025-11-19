@@ -22,7 +22,6 @@ const router = createBrowserRouter([
   { path: "/seat", element: <SeatPage/>},
   { path: "/seatlist", element: <SeatListPage/>},
   { path: "/"}
-
 ]);
 
 function App() {

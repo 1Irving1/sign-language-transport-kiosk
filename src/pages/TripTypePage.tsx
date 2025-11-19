@@ -1,14 +1,26 @@
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
+import { setTripType } from "../api/axios";  
 
 export default function TripTypePage() {
 
   const navigate = useNavigate();
 
-  const handleStart = (type: "one-way" | "round") => {
-    navigate("/datetime", {
-      state: { tripType: type },
-    });
+  const handleStart = async (type: "one-way" | "round") => {
+    try {
+     
+      const res = await setTripType(type);
+      console.log("triptype 응답:", res);
+
+      
+      navigate("/datetime", {
+        state: { tripType: type },
+      });
+
+    } catch (error) {
+      console.error("triptype 전송 실패:", error);
+      alert("오류가 발생했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
@@ -24,7 +36,7 @@ export default function TripTypePage() {
 
         <div className="flex flex-row items-center gap-6 mt-6 mx-auto">
 
-          {/* 편도 버튼 */}
+          {/* 편도 */}
           <button
             onClick={() => handleStart("one-way")}
             className="w-[180px] h-[200px] bg-blue-300 text-white hover:bg-blue-400 rounded-2xl shadow-md"
@@ -32,7 +44,7 @@ export default function TripTypePage() {
             편도로 갈래요.
           </button>
 
-          {/* 왕복 버튼 */}
+          {/* 왕복 */}
           <button
             onClick={() => handleStart("round")}
             className="w-[180px] h-[200px] bg-yellow-100 text-yellow-700 hover:bg-yellow-200 border border-yellow-300 rounded-2xl shadow-md"

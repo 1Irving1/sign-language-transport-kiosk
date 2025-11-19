@@ -1,14 +1,34 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { setPassengers } from "../api/axios";
 import Header from "../components/Header";
 
 export default function PassengerPage() {
   const navigate = useNavigate();
   const [count, setCount] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (count === null) return alert("탑승 인원을 선택해주세요.");
-    navigate("/triptype", { state: { passengers: count } });
+    
+    try {
+      setLoading(true);
+      
+      
+    const res = await setPassengers(count);
+    console.log("서버 응답:", res); 
+      
+      // 성공 시 다음 페이지로 이동
+      navigate("/triptype", { 
+        state: { passengers: count } 
+      });
+      
+    } catch (error) {
+      console.error("탑승 인원 전송 실패:", error);
+      alert("오류가 발생했습니다. 다시 시도해주세요.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const passengerOptions = [1, 2, 3, 4, 5];
@@ -30,12 +50,14 @@ export default function PassengerPage() {
               <button
                 key={num}
                 onClick={() => setCount(num)}
+                disabled={loading}
                 className={`w-24 h-24 rounded-2xl flex items-center justify-center text-3xl font-bold border 
                   ${
                     count === num
                       ? "bg-blue-600 text-white border-blue-700"
                       : "bg-white text-slate-700 border-slate-300"
                   }
+                  ${loading ? "opacity-50 cursor-not-allowed" : ""}
                 `}
               >
                 {num}
@@ -55,9 +77,10 @@ export default function PassengerPage() {
           {/* 다음 버튼 */}
           <button
             onClick={handleNext}
-            className="mt-10 px-8 py-4 bg-blue-600 text-white text-lg font-bold rounded-xl"
+            disabled={loading}
+            className="mt-10 px-8 py-4 bg-blue-600 text-white text-lg font-bold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            다음
+            {loading ? "전송 중..." : "다음"}
           </button>
         </main>
       </div>

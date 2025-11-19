@@ -1,5 +1,6 @@
 import Header from "../components/Header";
 import DatePicker from "react-datepicker";
+import { setDateTime } from "../api/axios";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
@@ -11,63 +12,101 @@ export default function DateTimePage() {
 
   const location = useLocation();
   const tripType = location.state?.tripType ?? "one-way";
-  console.log(tripType)
+  console.log("🟦 tripType:", tripType);
 
-  
   const [step, setStep] = useState<"departure" | "return">("departure");
 
   // 출발 날짜/시간
   const [departureDate, setDepartureDate] = useState<Date>(new Date());
   const [departureHour, setDepartureHour] = useState<number | null>(null);
 
-  // 복귀 날짜/시간(왕복만)
+  // 복귀 날짜/시간(왕복)
   const [returnDate, setReturnDate] = useState<Date | null>(null);
   const [returnHour, setReturnHour] = useState<number | null>(null);
 
   const hours = Array.from({ length: 24 }, (_, i) => i);
 
-  // 디버깅 로그 유지
+  // 로그
   useEffect(() => console.log("🚆 가는 날짜:", departureDate), [departureDate]);
   useEffect(() => console.log("⏰ 가는 시간:", departureHour), [departureHour]);
   useEffect(() => console.log("🔄 오는 날짜:", returnDate), [returnDate]);
   useEffect(() => console.log("🔂 오는 시간:", returnHour), [returnHour]);
 
-  
   const navigate = useNavigate();
 
-  
+ 
   const handleNext = () => {
     if (tripType === "one-way") {
-      console.log("편도 선택 완료 → 바로 기차 조회로 이동");
-      navigate("/timetable");
+      console.log("편도 선택");
+
+      handleRequestOneWay();
       return;
     }
+
     
     setStep("return");
   };
-  
-  //기차 조회
-  const handleSearchTrain = () => {
-    console.log("===== 최종 선택 데이터 =====");
-    console.log("여행유형:", tripType);
-    console.log("가는날짜:", departureDate);
-    console.log("가는시간:", departureHour);
-    console.log("오는날짜:", returnDate);
-    console.log("오는시간:", returnHour);
 
-    navigate("/timetable", {
-    state: {
-      tripType,
-      departureDate,
-      departureHour,
-      returnDate,
-      returnHour,
-    },
-  });
 
-    //API 호출
+  const handleRequestOneWay = async () => {
+    if (departureHour === null) return alert("출발 시간을 선택해주세요.");
+
+    const depDate = departureDate.toISOString().split("T")[0];
+    const depTime = `${String(departureHour).padStart(2, "0")}:00`;
+
+    const sendData = `${depDate} ${depTime}`;
+    console.log("📤 편도 데이터 전송:", sendData);
+
+    try {
+      const res = await setDateTime(sendData);
+      console.log("📥 datetime 응답:", res);
+
+      navigate("/timetable", {
+        state: {
+          tripType,
+          departureDate,
+          departureHour,
+        },
+      });
+    } catch (err) {
+      console.error("편도 datetime 전송 실패:", err);
+      alert("오류가 발생했습니다.");
+    }
   };
 
+
+
+  const handleSearchTrain = async () => {
+    if (departureHour === null || returnHour === null)
+      return alert("모든 시간 정보를 선택해주세요.");
+
+    const depDate = departureDate.toISOString().split("T")[0];
+    const depTime = `${String(departureHour).padStart(2, "0")}:00`;
+
+    const retDate = returnDate?.toISOString().split("T")[0];
+    const retTime = `${String(returnHour).padStart(2, "0")}:00`;
+
+    const sendData = `${depDate} ${depTime} | ${retDate} ${retTime}`;
+    console.log("📤 왕복 데이터 전송:", sendData);
+
+    try {
+      const res = await setDateTime(sendData);
+      console.log("📥 datetime 응답:", res);
+
+      navigate("/timetable", {
+        state: {
+          tripType,
+          departureDate,
+          departureHour,
+          returnDate,
+          returnHour,
+        },
+      });
+    } catch (err) {
+      console.error("왕복 datetime 전송 실패:", err);
+      alert("오류가 발생했습니다.");
+    }
+  };
 
 
   return (
@@ -78,14 +117,13 @@ export default function DateTimePage() {
 
         <main className="mt-7 px-6 flex flex-col items-center">
 
-          
           <p className="text-xl font-bold mb-4">
             {step === "departure"
               ? "출발할 날짜와 시간을 선택해주세요."
               : "돌아오는 날짜와 시간을 선택해주세요."}
           </p>
 
-          {/* 공통 달력 · 시간대 UI */}
+          {/* 캘린더 UI */}
           <DatePicker
             locale={ko}
             dateFormat="yyyy.MM.dd"
@@ -143,6 +181,7 @@ export default function DateTimePage() {
               </button>
             )}
           </div>
+
         </main>
       </div>
     </div>
