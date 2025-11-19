@@ -1,6 +1,7 @@
 import Header from "../components/Header";
 import DatePicker from "react-datepicker";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/locale/ko";
 import "../styles/calendar.css";
@@ -32,13 +33,15 @@ export default function DateTimePage() {
   useEffect(() => console.log("🔂 오는 시간:", returnHour), [returnHour]);
 
   
+  const navigate = useNavigate();
+
+  
   const handleNext = () => {
     if (tripType === "one-way") {
       console.log("편도 선택 완료 → 바로 기차 조회로 이동");
-      // navigate("/trainresult")
+      navigate("/timetable");
       return;
     }
-
     
     setStep("return");
   };
@@ -51,6 +54,16 @@ export default function DateTimePage() {
     console.log("가는시간:", departureHour);
     console.log("오는날짜:", returnDate);
     console.log("오는시간:", returnHour);
+
+    navigate("/timetable", {
+    state: {
+      tripType,
+      departureDate,
+      departureHour,
+      returnDate,
+      returnHour,
+    },
+  });
 
     //API 호출
   };
