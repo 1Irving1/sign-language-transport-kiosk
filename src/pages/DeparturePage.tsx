@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import CameraFeed from "../components/CameraFeed";
-import RecognitionResult from "../components/RecognitionResult";
+import CameraFeed from "../components/recognition/CameraFeed";
+import RecognitionResult from "../components/recognition/RecognitionResult";
 import Header from "../components/Header";
-import RecognitionButtons from "../components/RecognitionButton";
+import RecognitionButtons from "../components/recognition/RecognitionButton";
 import { useRecognitionFlow } from "../hooks/useRecognitionFlow";
 
 export default function DeparturePage() {
