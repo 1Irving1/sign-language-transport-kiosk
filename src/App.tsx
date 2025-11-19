@@ -14,9 +14,10 @@ const router = createBrowserRouter([
   { path: "/", element: <HomePage />, errorElement: <NotFoundPage /> },
   { path: "/departure", element: <DeparturePage /> },
   { path: "/arrival", element: <ArrivalPage /> },
+  { path: "/passenger", element: <PassengerPage /> },
   { path: "/triptype", element: <TripTypePage/>},
   { path: "/datetime", element: <DateTimePage/>},
-  { path: "/passenger", element: <PassengerPage /> },
+  { path: "/trainlist", element: <PassengerPage /> },
   { path: "/seat", element: <SeatPage/>},
   { path: "/seatlist", element: <SeatListPage/>},
   { path: "/"}
