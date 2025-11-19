@@ -12,9 +12,9 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex items-center justify-center w-screen h-screen bg-gradient-to-b from-blue-50 to-gray-100">
+    <div className="flex items-center justify-center w-screen h-screen bg-white to-gray-100">
       
-      <div className="w-[450px] h-[900px] bg-gradient-to-b from-blue-50 to-white shadow-xl rounded-3xl shadow-2xl flex flex-col overflow-hidden">
+      <div className="w-[450px] h-[900px] bg-gradient-to-b from-blue-50 to-white shadow-xl shadow-2xl flex flex-col overflow-hidden">
               
         <main className="flex flex-col items-center justify-center  flex-1 px-8 text-center">
           <p className="text-[27px] font-bold text-gray-800 leading-snug mb-4">
@@ -29,7 +29,7 @@ export default function HomePage() {
             예매 시작하기
           </button>
           <p className="text-lg font-medium text-gray-500 mt-6">
-            시작하기 버튼을 눌러주세요
+            시작하기 버튼을 눌러주세요.
           </p>
         </main>
 
