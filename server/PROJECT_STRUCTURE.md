@@ -90,7 +90,7 @@ inference_from_file()
 - 싫어하다
 - 안타깝다
 - 어색하다
-- <unk>
+- <unk>;
 
 ## 🔧 설정 변경
 

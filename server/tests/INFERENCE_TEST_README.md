@@ -233,9 +233,9 @@ model:
 
 ```yaml
 # 신체 부위별 정규화 비활성화 (기본 정규화 사용)
-realtime:
-  normalization:
-    enable_bodypart_norm: false
+#realtime:
+#  normalization:
+#    enable_bodypart_norm: false
 
 # 정규화 파라미터 조정
 realtime:
